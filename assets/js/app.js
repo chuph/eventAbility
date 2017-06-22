@@ -94,11 +94,18 @@ form.css({
 
 });
 
+/*****************
+PARSLEY VALIDATION
+******************/
+
+$('#form').parsley();
+
+
+
+
 /*************************************************
 EVENTBRITE API, GOOGLE MAPS API, SMARTYSTREETS API
 *************************************************/
-
-
 
 $('#submit').on('click', function (e) {
     e.preventDefault();
@@ -162,7 +169,7 @@ $('#submit').on('click', function (e) {
 
             var randomizer = Math.floor((Math.random() * res.events.length));
             var eAddr = res.events[randomizer].venue.address.address_1;
-            if (eAddr != null) {
+            if (eAddr !== null) {
                 eAddr = eAddr.replace(/&/g, "and");
             }
             var eName = res.events[randomizer].venue.name;
@@ -171,7 +178,7 @@ $('#submit').on('click', function (e) {
             var title = res.events[randomizer].name.text;
             var description = res.events[randomizer].description.text;
             var date = res.events[randomizer].start.local;
-            var formatDate = moment(date).format('MMMM Do YYYY, h:mm a')
+            var formatDate = moment(date).format('MMMM Do YYYY, h:mm a');
             var address = res.events[randomizer].venue.address.address_1 + " " + res.events[randomizer].venue.address.address_2;
             var postal = res.events[randomizer].venue.address.postal_code;
             var $eventTitle = $('<h1>');
@@ -209,7 +216,7 @@ $('#submit').on('click', function (e) {
             $("#mapps").attr("src", mapURL);
 
             
-        }; // END randomEvent FUNCTION
+        } // END randomEvent FUNCTION
 
         randomEvent();
       

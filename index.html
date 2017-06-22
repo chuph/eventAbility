@@ -10,9 +10,8 @@
 	<!-- Materiailize Compiled and minified CSS -->
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
 
-	<!-- Slick Carousel CSS -->
-  	<link rel="stylesheet" type="text/css" href="assets/css/slick.css"/>
-	<link rel="stylesheet" type="text/css" href="assets/css/slick-theme.css"/>
+	<!-- Parsley CSS -->
+	<link rel="stylesheet" type="text/css" href="assets/css/parsley.css">  	
 
   	<!-- Current Theme -->
 	<link rel="stylesheet" type="text/css" href="assets/css/theme.css">
@@ -36,24 +35,9 @@
 		</div>
 
 		<div id="formHolder">
-			<form class="infoForm">
-				<p class="center-align">Your Info</p>
+			<form class="infoForm" data-parsley-validate="" id="form">
+				
 				<div>
-					<div>
-						<input placeholder="Zip Code" id="zip" type="text" class="validate">
-					</div>
-					<div>
-						<input placeholder="Email" id="email" type="text" class="validate" autocomplete="off">
-					</div>
-					<div class="input-field">
-						<select id="distance">
-							<option value="5">5 mi.</option>
-							<option value="10">10 mi.</option>
-							<option value="25">25 mi.</option>
-							<option value="50">50 mi.</option>
-						</select>
-						<label>Distance to Search</label>
-					</div>
 					<div class="input-field">
 						<select multiple id="category">
 							<option value="music">Music</option>
@@ -65,8 +49,25 @@
 						</select>
 						<label>Your Interests</label>
 					</div>
+					<div>
+						<input placeholder="Zip Code" id="zip" type="text" class="form-control" data-parsley-maxlength="5" data-parsley-trigger="blur" required="">
+					</div>
+					<div class="input-field">
+						<select id="distance">
+							<option value="5">5 mi.</option>
+							<option value="10">10 mi.</option>
+							<option value="25">25 mi.</option>
+							<option value="50">50 mi.</option>
+						</select>
+						<label>Distance to Search</label>
+					</div>
+					<div>
+						<input placeholder="Email" id="email" type="text" autocomplete="off">
+					</div>
+					
+					
 					<div class="input-field" >
-						<input type="date" class="datepicker" id="date">
+						<input type="date" class="datepicker" id="date" data-parsley-trigger="blur" required="">
 						<label>Pick a Date</label>
 					</div>
 					<div>
@@ -130,27 +131,17 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZO4fsXLv5ODYYBldfEUCCF63RmouiFWU&callback&region=US">
 </script>
 
-<!-- Current App Logic -->
-<script type="text/javascript" src="assets/js/app.js"></script>
-
 <!-- Firebase Javascript -->
 <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
+<!-- Parsley Validator -->
+<script type="text/javascript" src="assets/js/parsley.min.js"></script>
+
+<!-- Current App Logic -->
+<script type="text/javascript" src="assets/js/app.js"></script>
 
 
 
-
-<!-- 
-    <h3>My Google Maps Demo</h3>
-=======
-
-
-
-
-    
-
-    <div id="map"></div>
-    -->
   
 
 </body>
