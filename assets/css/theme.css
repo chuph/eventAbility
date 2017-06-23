@@ -53,6 +53,7 @@
 #eventHolder {
 	width: 90%;
 	margin: 30px auto;
+	overflow-y: auto;
 	
 }
 
@@ -110,6 +111,42 @@
 	margin: 10px auto;
 }
 
+.parsley-required {
+	color: #ff0000;
+
+}
+
+.validZip {
+	color: #ff0000;
+}
+
+#zip {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#date {
+	margin-bottom: 0;
+	margin-top: 0;
+	padding-bottom: 0;
+	line-height: 20px;
+}
+
+#submit {
+	margin-top: 10px;
+}
+
+#zip.parsley-success {
+	color: #fff;
+	background: none;
+	border: none;
+	border-bottom: 1px solid #9e9e9e;
+}
+
+label {
+	margin-top: 10px;
+}
+=======
 .image {
 	width: 540px;
 	height: auto;
@@ -212,6 +249,8 @@
 	float: none;
 	border-bottom: 2px solid #000;
 	padding-bottom: 20px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #eventLoc {

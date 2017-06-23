@@ -1,6 +1,12 @@
 <html>
 
+
+
 Javascript Sample page <br>
+
+<link rel="stylesheet" type="text/css" href="assets/css/parsley.css"> 
+
+
 
 <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -11,90 +17,96 @@ Javascript Sample page <br>
 
 </script>
 
+<script type="text/javascript" src="assets/js/parsley.min.js"></script>
+
+
+
 <script type="text/javascript">
 
-function show_alert()
+$('#form').parsley();
 
-{
+// function show_alert()
 
-  var oArgs = {
+// {
 
-            app_key:"xLMZHfCtVBSsLdqj",
+//   var oArgs = {
 
-            id: "20218701",
+//             app_key:"xLMZHfCtVBSsLdqj",
 
-            page_size: 25 ,
+//             id: "20218701",
 
-  };
+//             page_size: 25 ,
 
-  EVDB.API.call("/events/get", oArgs, function(oData) {
+//   };
 
-      // Note: this relies on the custom toString() methods below
-      console.log(oData);
+//   EVDB.API.call("/events/get", oArgs, function(oData) {
 
-    });
+//       // Note: this relies on the custom toString() methods below
+//       console.log(oData);
 
-}
+//     });
+
+// }
 
 
 
-function show_alert2()
+// function show_alert2()
 
-{
+// {
 
-   var oArgs = {
+//    var oArgs = {
 
-      app_key: "xLMZHfCtVBSsLdqj",
+//       app_key: "xLMZHfCtVBSsLdqj",
 
-      q: "music",
+//       q: "music",
 
-      where: "Dallas", 
+//       where: "Dallas", 
 
-      date: "2013061000-2017062000",
+//       date: "2013061000-2017062000",
 
-      page_size: 10,
+//       page_size: 10,
 
-      sort_order: "popularity",
+//       sort_order: "popularity",
 
-   };
+//    };
 
-   EVDB.API.call("/events/search", oArgs, function(oData) {
+//    EVDB.API.call("/events/search", oArgs, function(oData) {
 
-      // Note: this relies on the custom toString() methods below
-      console.log(oData);
-      console.log(oData.events.event[0].city_name);
-    });
+//       // Note: this relies on the custom toString() methods below
+//       console.log(oData);
+//       console.log(oData.events.event[0].city_name);
+//     });
 
-}
+// }
 
-function show_alert3() {
+// function show_alert3() {
 
-  var url = "http://api.eventful.com/json/events/search"
-  var apiKey = "xLMZHfCtVBSsLdqj";
+//   var url = "http://api.eventful.com/json/events/search"
+//   var apiKey = "xLMZHfCtVBSsLdqj";
 
-  url += '?' + $.param ({
-      'app_key': apiKey,
-      'q': 'music',
-      'where': 'Dallas',
-      'date': "2013061000-2017062000",
-      'page_size': 10,
-      'sort_order': "popularity"
+//   url += '?' + $.param ({
+//       'app_key': apiKey,
+//       'q': 'music',
+//       'where': 'Dallas',
+//       'date': "2013061000-2017062000",
+//       'page_size': 10,
+//       'sort_order': "popularity"
 
-  });
+//   });
 
-  console.log(url);
+//   console.log(url);
 
-  $.ajax({
-    url: url,
-    method: 'GET',
-    dataType: 'jsonp'
-  }).done(function (data) {
+//   $.ajax({
+//     url: url,
+//     method: 'GET',
+//     dataType: 'jsonp'
+//   }).done(function (data) {
 
-    console.log(data);
+//     console.log(data);
 
-  }); // END AJAX DONE
+//   }); // END AJAX DONE
 
-}; // END show_alert3
+// }; // END show_alert3
 
 </script>
 
@@ -104,11 +116,14 @@ function show_alert3() {
 
 Run Sample api searches <br><br>
 
-<input type="button" onclick="show_alert()" value="Query #1 " /> <br>
+<form id="form" data-parsley-validate data-parsley-ui-enabled="true">
 
-<input type="button" onclick="show_alert2()" value="Query #2 " /> <br>
+<input type="text" data-parsley-required data-parsley-trigger="blur" data-parsley-maxlength="5"> <br>
+<input type="text" data-parsley-required>
+<button type="submit">Submit</button>
 
-<input type="button" onclick="show_alert3()" value="Query #3 " /> <br>
+</form>
+
 
 </body>
 
