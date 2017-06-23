@@ -95,32 +95,18 @@ form.css({
 });
 
 /*****************
-PARSLEY VALIDATION
+FORM VALIDATION
 ******************/
+var zip;
+var zipValid = false;
+var dateValid = false;
 
+$('.errorHolder').hide();
 $('#form').parsley();
 
+$('#zip').on('blur', function () {
 
-
-
-/*************************************************
-EVENTBRITE API, GOOGLE MAPS API, SMARTYSTREETS API
-*************************************************/
-
-$('#submit').on('click', function (e) {
-    e.preventDefault();
-
-    var zip = $('#zip').val().trim();
-    var email = $('#email').val().trim();
-    var distance = $('#distance').val().trim();
-    var category = $('#category').val();
-    category = category.toString();
-    var startDate = moment().format('YYYY-MM-DDThh:mm:ss');
-    var endDate = moment($('#date').val()).format('YYYY-MM-DDThh:mm:ss');
-    var dateRange = startDate + "-" + endDate;
-
-// SMARTYSTREETS API
-
+    zip = $('#zip').val().trim();
     var smartToken = 'nCkB0jk3NcAOlKBPbnOF';
     var smartAuth = '7040a637-7f2a-c512-85b2-a09906fa6824';
     var smartURL = 'https://us-zipcode.api.smartystreets.com/lookup?';
@@ -136,15 +122,73 @@ $('#submit').on('click', function (e) {
     }).done(function (smart) {
         console.log(smart);
         console.log('Smart Valid: ' + smart[0].status);
+        console.log(typeof smart[0].status);
 
-        if(smart[0].status == "invalid_zipcode") {
+        if(smart[0].status == "invalid_zipcode" || smart[0].status == "blank") {
             console.log('Enter Valid Zip Code');
+            $('.errorHolder').show();
+            zipValid = false;
+           
         } else {
             console.log('Thats a good zip');
+            $('.errorHolder').hide();
+            zipValid = true;
+
+            if (dateValid == true) {
+                $('#submit').removeClass('disabled');
+            }
+            
         }
 
 
     }); // END SMARTYSTREET AJAX DONE
+
+}) // END ZIP BLUR EVENT
+
+$('.picker__holder').on('click', '.picker__clear', function () {
+    $('#date').val('');
+    $('#dateSection label').addClass('red-text');
+    dateValid = false;
+
+}); // END PICKER CLEAR CLICK
+
+$('.picker__holder').on('click', '.picker__close', function () {
+
+    var dateValue = $('#date').val();
+    if(dateValue == "") {
+        $('#dateSection label').addClass('red-text');
+        dateValid = false;
+        
+    } else {
+        $('#dateSection label').removeClass('red-text');
+        dateValid = true;
+
+        if (zipValid == true) {
+            $('#submit').removeClass('disabled');
+        }
+        
+    }
+}); // END PICKER CLOSE CLICK
+
+
+/*************************************************
+EVENTBRITE API, GOOGLE MAPS API, SMARTYSTREETS API
+*************************************************/
+
+$('#submit').on('click', function (e) {
+    e.preventDefault();
+    $('#submit').addClass('disabled');
+
+    
+    var email = $('#email').val().trim();
+    var distance = $('#distance').val().trim();
+    var category = $('#category').val();
+    category = category.toString();
+    var startDate = moment().format('YYYY-MM-DDThh:mm:ss');
+    var endDate = moment($('#date').val()).format('YYYY-MM-DDThh:mm:ss');
+    var dateRange = startDate + "-" + endDate;
+
+
 
 // EVENTBRITE API
 
@@ -167,54 +211,84 @@ $('#submit').on('click', function (e) {
     
         function randomEvent() {
 
-            var randomizer = Math.floor((Math.random() * res.events.length));
-            var eAddr = res.events[randomizer].venue.address.address_1;
-            if (eAddr !== null) {
-                eAddr = eAddr.replace(/&/g, "and");
-            }
-            var eName = res.events[randomizer].venue.name;
-            var city = res.events[randomizer].venue.address.city;
-            var state = res.events[randomizer].venue.address.region;
-            var title = res.events[randomizer].name.text;
-            var description = res.events[randomizer].description.text;
-            var date = res.events[randomizer].start.local;
-            var formatDate = moment(date).format('MMMM Do YYYY, h:mm a');
-            var address = res.events[randomizer].venue.address.address_1 + " " + res.events[randomizer].venue.address.address_2;
-            var postal = res.events[randomizer].venue.address.postal_code;
-            var $eventTitle = $('<h1>');
-            var $eventImg = $('<img>');
-            var $eventDes = $('<p>');
-            var $eventDate = $('<p>');
-            var $locName = $('<p>');
-            var $locAddr = $('<p>');
-            var $locRegion = $('<p>');
-            var randomizerButton = $('<button>');
-            var $buttonHolder = $('<div>');
-            
-            console.log("Randomizer: " + randomizer);
+            if (res.events.length == 0) {
+                $('#eventHolder').show();
+                var $noEvent = $('<h1>').append('Try your search again!');
+                var $noEventImg = $('<img>');
+                $noEventImg.attr('src', '../eventAbility/assets/img/no-results.jpg');
+                $('#eventDesc').append($noEventImg, $noEvent);
+                $('#eventLocDetails').empty();
+                $("#mapps").attr("src", "");
 
-            $eventTitle.append(title).addClass('title');
-            $eventImg.attr('src', res.events[randomizer].logo.original.url);
-            $eventDes.append(description).addClass('description');
-            $eventDate.append(formatDate).addClass('date');
-            $('#eventDesc').append($eventTitle, $eventDate, $eventImg, $eventDes);
+            } else {
 
-            $locName.append(eName).addClass('locName');
-            $locAddr.append(address);
-            $locRegion.append(city + ", " + state + " " + postal);
-            $('#eventLocDetails').prepend($locName, $locAddr, $locRegion);
-           
-            randomizerButton.addClass('randomizer btn').append('New Event');
-            $buttonHolder.append(randomizerButton).addClass('buttonHolder');
+                var randomizer = Math.floor((Math.random() * res.events.length));
 
-            $('#eventHolder').prepend($buttonHolder);
-            $('#eventHolder').show();
+                var eAddr = res.events[randomizer].venue.address.address_1;
+                if (eAddr !== null) {
+                    eAddr = eAddr.replace(/&/g, "and");
+                }
 
-        // GOOGLE MAPS API
-            var mapURL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDZO4fsXLv5ODYYBldfEUCCF63RmouiFWU&q=" + eAddr + "," + city + "+" + state;
+                var eName = res.events[randomizer].venue.name;
+                var city = res.events[randomizer].venue.address.city;
+                var state = res.events[randomizer].venue.address.region;
+                var title = res.events[randomizer].name.text;
+                var description = res.events[randomizer].description.text;
+                var date = res.events[randomizer].start.local;
+                var formatDate = moment(date).format('MMMM Do YYYY, h:mm a');
+                if (res.events[randomizer].venue.address.address_1 !== null) {
+                    var address = res.events[randomizer].venue.address.address_1 + " ";
+                }   
+                if (res.events[randomizer].venue.address.address_2 !== null) {
+                    address += res.events[randomizer].venue.address.address_2;
+                }
 
-            $("#mapps").attr("src", mapURL);
+                var postal = res.events[randomizer].venue.address.postal_code;
+                var $eventTitle = $('<h1>');
+                
+                var $eventDes = $('<p>');
+                var $eventDate = $('<p>');
+                var $locName = $('<p>');
+                var $locAddr = $('<p>');
+                var $locRegion = $('<p>');
+                var randomizerButton = $('<button>');
+                var $buttonHolder = $('<div>');
+                
+                console.log("Randomizer: " + randomizer);
 
+                $eventTitle.append(title).addClass('title');
+                $eventDes.append(description).addClass('description');
+                $eventDate.append(formatDate).addClass('date');
+                $('#eventDesc').append($eventTitle, $eventDate, $eventDes);
+
+                if (res.events[randomizer].logo !== null) {
+                    var $eventImg = $('<img>');
+                    $eventImg.attr('src', res.events[randomizer].logo.original.url);
+                    $('.date').after($eventImg);
+                }
+
+                $locName.append(eName).addClass('locName');
+                $locAddr.append(address);
+
+                $locRegion.append(city + ", " + state + " ");
+                if (postal !== null) {
+                    $locRegion.append(postal);
+                }
+
+                $('#eventLocDetails').prepend($locName, $locAddr, $locRegion);
+               
+                randomizerButton.addClass('randomizer btn').append('New Event');
+                $buttonHolder.append(randomizerButton).addClass('buttonHolder');
+
+                $('#eventHolder').prepend($buttonHolder);
+                $('#eventHolder').show();
+
+            // GOOGLE MAPS API
+                var mapURL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDZO4fsXLv5ODYYBldfEUCCF63RmouiFWU&q=" + eAddr + "," + city + "+" + state;
+
+                $("#mapps").attr("src", mapURL);
+
+            } // END IF/ELSE EVENT EXISTENCE    
             
         } // END randomEvent FUNCTION
 

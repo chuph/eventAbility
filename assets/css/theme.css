@@ -53,6 +53,7 @@
 #eventHolder {
 	width: 90%;
 	margin: 30px auto;
+	overflow-y: auto;
 	
 }
 
@@ -115,16 +116,9 @@
 
 }
 
-
-/*.parsley-errors-list, .filled {
-	margin: 0;
-	padding: 0;
+.validZip {
+	color: #ff0000;
 }
-
-#parsley-id-7 {
-	margin: 0;
-	padding: 0;
-}*/
 
 #zip {
 	margin-bottom: 0;
@@ -238,6 +232,8 @@ label {
 	float: none;
 	border-bottom: 2px solid #000;
 	padding-bottom: 20px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #eventLoc {

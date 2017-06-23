@@ -3,6 +3,7 @@
 <head>
 	<title>eventAbility</title>
 	<meta charset="utf-8" lang="en">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- Reset CSS -->
 	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
@@ -51,6 +52,9 @@
 					</div>
 					<div>
 						<input placeholder="Zip Code" id="zip" type="text" class="form-control" data-parsley-maxlength="5" data-parsley-trigger="blur" required="">
+						<ul class="errorHolder">
+							<li class="validZip">Enter a valid zip code!</li>
+						</ul>
 					</div>
 					<div class="input-field">
 						<select id="distance">
@@ -66,12 +70,12 @@
 					</div>
 					
 					
-					<div class="input-field" >
-						<input type="date" class="datepicker" id="date" data-parsley-trigger="blur" required="">
+					<div class="input-field" id="dateSection">
+						<input type="date" class="datepicker" id="date">
 						<label>Pick a Date</label>
 					</div>
 					<div>
-						<button id="submit" class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+						<button id="submit" class="btn waves-effect waves-light disabled" type="submit" name="action">Submit</button>
 					</div>
 				</div>
 			</form>
