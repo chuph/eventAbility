@@ -71,59 +71,6 @@ function eventAPI (position) {
     lat = lat.toString();
     lon = lon.toString();
     
-
-    token2 = 'NHGJJNM3WETFRYYCXJ6H';
-    urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
-
-    urlStart += $.param({
-        'q': "music",
-        'location.latitude': lat,
-        'location.longitude': lon,
-        'location.within': '20mi',
-        'sort_by': 'best',
-        'start_date.range_start': moment().format('YYYY-MM-DDThh:mm:ss'),
-        'start_date.range_end' : moment().add(1, 'week').format('YYYY-MM-DDThh:mm:ss')
-    });
-
-    $.ajax({
-        method: "GET",
-        url: urlStart
-        }).done(function(bleu) {
-            console.log(bleu);
-
-    var changer = Math.floor((Math.random() * bleu.events.length));
-    var changer2 = Math.floor((Math.random() * bleu.events.length));
-    var changer3 = Math.floor((Math.random() * bleu.events.length));
-
-    var titleOne = bleu.events[changer].name.text;
-    var titleTwo = bleu.events[changer2].name.text;
-    var titleTre = bleu.events[changer3].name.text;
-   
-    var fronta = $("<h4>");
-    var frontb = $("<h4>");
-    var frontc = $("<h4>");
-
-    var imgOne = $("<img>");
-    var imgTwo = $("<img>");
-    var imgTre = $("<img>");
-
-    fronta.append(titleOne).addClass('front');
-    frontb.append(titleTwo).addClass('front');
-    frontc.append(titleTre).addClass('front');
-
-    imgOne.addClass('image').attr('src', bleu.events[changer].logo.original.url);
-    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
-    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
-
-    $('<h1>Popular Events Around the Country</h1>').appendTo('#startUp');
-    $("#showOne").prepend(fronta, imgOne);
-    $("#showTwo").prepend(frontb, imgTwo);
-    $("#showTre").prepend(frontc, imgTre);
-    console.log(fronta);
-        
-        });
-
-
         
 
 }
