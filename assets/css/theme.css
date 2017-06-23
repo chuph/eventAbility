@@ -110,6 +110,22 @@
 	margin: 10px auto;
 }
 
+.image {
+	width: 540px;
+	height: auto;
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.front {
+	text-align: center;
+}
+
+#startUp {
+	text-align: center;
+}
+
 
 
 @media screen and (max-width: 480px) {
@@ -203,6 +219,7 @@
 	float: none;
 	margin-top: 20px;
 }
+
 
 
 }
