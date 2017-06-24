@@ -2,15 +2,202 @@
 $(document).ready(function(){
     
 /*********************************
-MATERIALIZE & SLICK FUNCTION CALLS
+MATERIALIZE & LOAD FORMATING
 *********************************/
 
 $('select').material_select();
 $('.datepicker').pickadate();
-$('.slickHolder').slick({
-	dots: true,
-    infinite: true
-});
+$('#eventHolder').hide();
+
+
+/*********************************
+EVENTBRITE API INITIAL LOAD
+*********************************/ 
+var lat;
+var lon;
+var urlStart;
+var token2;
+
+function geoAllow (position) {
+
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    lat = lat.toString();
+    lon = lon.toString();
+    
+
+    token2 = 'NHGJJNM3WETFRYYCXJ6H';
+    urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
+
+    urlStart += $.param({
+        'q': "music",
+        'location.latitude': lat,
+        'location.longitude': lon,
+        'location.within': '20mi',
+        'sort_by': 'best',
+        'start_date.range_start': moment().format('YYYY-MM-DDThh:mm:ss'),
+        'start_date.range_end' : moment().add(1, 'week').format('YYYY-MM-DDThh:mm:ss')
+    });
+
+    $.ajax({
+        method: "GET",
+        url: urlStart
+        }).done(function(bleu) {
+            console.log(bleu);
+
+    var changer = Math.floor((Math.random() * bleu.events.length));
+    var changer2 = Math.floor((Math.random() * bleu.events.length));
+    var changer3 = Math.floor((Math.random() * bleu.events.length));
+
+    var titleOne = bleu.events[changer].name.text;
+    var titleTwo = bleu.events[changer2].name.text;
+    var titleTre = bleu.events[changer3].name.text;
+   
+    var fronta = $("<h4>").addClass('front1');
+    var frontb = $("<h4>").addClass('front2');
+    var frontc = $("<h4>").addClass('front3');
+
+    var linka = $('<a>').addClass('linka');
+    var linkb = $('<a>').addClass('linkb');
+    var linkc = $('<a>').addClass('linkc');
+    
+    fronta = fronta.append(linka);
+    frontb = frontb.append(linkb);
+    frontc = frontc.append(linkc);
+
+    var imgOne = $("<img>");
+    var imgTwo = $("<img>");
+    var imgTre = $("<img>");
+    
+    $(linka).text(titleOne).attr({
+                'href': bleu.events[changer].url,
+                'target': '_blank'
+            });
+    $(linkb).text(titleTwo).attr({
+                'href': bleu.events[changer2].url,
+                'target': '_blank'
+            });
+    $(linkc).text(titleTre).attr({
+                'href': bleu.events[changer3].url,
+                'target': '_blank'
+            });
+
+    if (bleu.events[changer].logo !== null) {
+    imgOne.addClass('image').attr('src', bleu.events[changer].logo.original.url);
+    }
+
+    if (bleu.events[changer2].logo !== null) {
+    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
+    }
+
+    if (bleu.events[changer3].logo !== null) {
+    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
+    }
+
+    $('<h1>Popular Events in Your Area</h1>').appendTo('#startUp');
+    $("#showOne").prepend(fronta, imgOne);
+    $("#showTwo").prepend(frontb, imgTwo);
+    $("#showTre").prepend(frontc, imgTre);
+    console.log(fronta);
+        
+        });
+
+}
+
+function geoDeny (position) {
+
+    token2 = 'NHGJJNM3WETFRYYCXJ6H';
+    urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
+
+    urlStart += $.param({
+        'q': "music",
+        'sort_by': 'best',
+        'start_date.range_start': moment().format('YYYY-MM-DDThh:mm:ss'),
+        'start_date.range_end' : moment().add(1, 'week').format('YYYY-MM-DDThh:mm:ss')
+    });
+
+    $.ajax({
+        method: "GET",
+        url: urlStart
+        }).done(function(bleu) {
+            console.log(bleu);
+
+    var changer = Math.floor((Math.random() * bleu.events.length));
+    var changer2 = Math.floor((Math.random() * bleu.events.length));
+    var changer3 = Math.floor((Math.random() * bleu.events.length));
+
+    var titleOne = bleu.events[changer].name.text;
+    var titleTwo = bleu.events[changer2].name.text;
+    var titleTre = bleu.events[changer3].name.text;
+   
+    var fronta = $("<h4>").addClass('front1');
+    var frontb = $("<h4>").addClass('front2');
+    var frontc = $("<h4>").addClass('front3');
+
+    var linka = $('<a>').addClass('linka');
+    var linkb = $('<a>').addClass('linkb');
+    var linkc = $('<a>').addClass('linkc');
+    
+    fronta = fronta.append(linka);
+    frontb = frontb.append(linkb);
+    frontc = frontc.append(linkc);
+
+    var imgOne = $("<img>");
+    var imgTwo = $("<img>");
+    var imgTre = $("<img>");
+    
+    $(linka).text(titleOne).attr({
+                'href': bleu.events[changer].url,
+                'target': '_blank'
+            });
+    $(linkb).text(titleTwo).attr({
+                'href': bleu.events[changer2].url,
+                'target': '_blank'
+            });
+    $(linkc).text(titleTre).attr({
+                'href': bleu.events[changer3].url,
+                'target': '_blank'
+            });
+
+    if (bleu.events[changer].logo !== null) {
+    imgOne.addClass('image').attr('src', bleu.events[changer].logo.original.url);
+    }
+
+    if (bleu.events[changer2].logo !== null) {
+    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
+    }
+
+    if (bleu.events[changer3].logo !== null) {
+    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
+    }
+
+    $('<h1>Popular Events Around the Country</h1>').appendTo('#startUp');
+    $("#showOne").prepend(fronta, imgOne);
+    $("#showTwo").prepend(frontb, imgTwo);
+    $("#showTre").prepend(frontc, imgTre);
+    console.log(fronta);
+        
+        });
+
+}
+
+function getLocation() {
+
+        navigator.geolocation.getCurrentPosition(geoAllow, geoDeny);
+       
+    } 
+
+
+if (navigator.geolocation) {
+
+    getLocation();
+        
+}
+
+
+
+
+
 
 /*********************************
 FIREBASE
@@ -60,25 +247,11 @@ FIREBASE
             var lastKey = svArr[lastIndex];
             var lastObj = sv[lastKey];
 
-            console.log(lastObj.zip);
-            console.log(lastObj.email);
-            console.log(lastObj.interest);
-
-            console.log(snapshot.val());
         }
     }, function(errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
 
-
-
-
-
-// End code for firebase
-
-// console.log(interest);
-
-// var pics = ['../img/concert.jpg', '../img/hang_out3.jpg', '../img/rock_climbing.jpg']
 
 /*************************
 MAIN HEADLINE SLIDESHOW
@@ -88,152 +261,194 @@ var form = $('#formHolder');
 var backgrounds = ['url("assets/img/concert.jpg") 0 0 no-repeat', 'url("assets/img/hang_out3.jpg") 0 0 no-repeat', 'url("assets/img/rock_climbing.jpg") 0 0 no-repeat'];
 var current = 0;
 
+function InvervalTimer(callback, interval) {
+        var timerId, startTime, remaining = 0;
+        var state = 0; //  0 = idle, 1 = running, 2 = paused, 3= resumed
+
+       this.pause = function () {
+            if (state != 1) return;
+
+           remaining = interval - (new Date() - startTime);
+            window.clearInterval(timerId);
+            state = 2;
+        };
+
+       this.resume = function () {
+            if (state != 2) return;
+
+           state = 3;
+            window.setTimeout(this.timeoutCallback, remaining);
+        };
+
+       this.timeoutCallback = function () {
+            if (state != 3) return;
+
+           callback();
+
+           startTime = new Date();
+            timerId = window.setInterval(callback, interval);
+            state = 1;
+        };
+
+       startTime = new Date();
+        timerId = window.setInterval(callback, interval);
+        state = 1;
+    }
+
+var timer = new InvervalTimer(function () {
+        nextBackground();
+    }, 5000);
+
+
 function nextBackground() {
-	form.css({
+    var width = window.outerWidth;
+    if (width < 720){
+ $('#formHolder').css({
+                'background': 'none'
+})}
+else {
+    form.css({
         'background': backgrounds[current = ++current % backgrounds.length],
         'background-size': '100%'
 
-    });
+  });}
 
-    setTimeout(nextBackground, 10000);
+  // setTimeout(nextBackground, 3000);
 }
 
-setTimeout(nextBackground, 10000);
+// var timing = setTimeout(nextBackground, 3000);
 form.css({
     'background': backgrounds[0],
     'background-size': '100%'
 
 });
 
-// window.onresize = function() {
+window.onresize = function() {
 
-//     var width = window.outerWidth;
-//     console.log(width);
+  var width = window.outerWidth;
+    console.log(width);
 
-//     if (width < 720) {
+  if (width < 720) {
 
-//         $('#formHolder').css({
-//                 'background': 'none'
+      $('#formHolder').css({
+                'background': 'none'
 
-//         });
-//     } else if (width >= 720) {
 
-//         setTimeout(nextBackground, 10000);        
-//     }
-// };
-     
-    
-/*************************
-EVENTFUL API
-*************************/
+      });
+       // clearTimeout(timing);
 
-// $('#submit').on('click', function (e) {
-//     e.preventDefault();
+   // } else if (width >= 720) {
+            // nextBackground();
+       // setTimeout(nextBackground, 3000);        
+  }
+};
 
-//     var zip = $('#zip').val().trim();
-//     var email = $('#email').val().trim();
-//     var distance = $('#distance').val().trim();
-//     var category = $('#category').val();
-//     var startDate = moment().format('YYYYMMDD') + "00";
-//     var endDate = moment($('#date').val()).format('YYYYMMDD') + "00";
-//     var dateRange = startDate + "-" + endDate;
+/*****************
+FORM VALIDATION
+******************/
+var zip;
+var zipValid = false;
+var dateValid = false;
 
-//     console.log('Zip: ' + zip);
-//     console.log('Email: ' + email);
-//     console.log('Distance: ' + distance);
-//     console.log('Category: ' + category);
-//     console.log('Start Date: ' + startDate);
-//     console.log('Date: ' + endDate);
-//     console.log('Date Range: ' + dateRange);
+$('.errorHolder').hide();
+$('#form').parsley();
 
-//     var url = "http://api.eventful.com/json/events/search"
-//     var apiKey = "xLMZHfCtVBSsLdqj";
+$('#zip').on('blur', function () {
 
-//     url += '?' + $.param ({
-//         'app_key': apiKey,
-//         'q': category,
-//         'location': zip,
-//         'within': distance,
-//         'date': dateRange,
-//         'page_size': 10,
-//         'sort_order': "relevance"
+    zip = $('#zip').val().trim();
+    var smartToken = 'nCkB0jk3NcAOlKBPbnOF';
+    var smartAuth = '7040a637-7f2a-c512-85b2-a09906fa6824';
+    var smartURL = 'https://us-zipcode.api.smartystreets.com/lookup?';
+    smartURL += $.param({
+        'auth-id': smartAuth,
+        'auth-token': smartToken,
+        'zipcode': zip
+    });
 
-//     });
+    $.ajax({
+        method: 'GET', 
+        url: smartURL
+    }).done(function (smart) {
+        console.log(smart);
+        console.log('Smart Valid: ' + smart[0].status);
+        console.log(typeof smart[0].status);
 
-//     console.log(url);
+        if(smart[0].status == "invalid_zipcode" || smart[0].status == "blank") {
+            console.log('Enter Valid Zip Code');
+            $('.errorHolder').show();
+            zipValid = false;
+           
+        } else {
+            console.log('Thats a good zip');
+            $('.errorHolder').hide();
+            zipValid = true;
 
-//     $.ajax({
-//         url: url,
-//         method: 'GET',
-//         dataType: 'jsonp'
-//     }).done(function (data) {
-
-//         console.log(data);
-
-//         var events = data.events;
-
-//         for (var i = 0; i < events.event.length; i++) {
+            if (dateValid == true) {
+                $('#submit').removeClass('disabled');
+            }
             
-//                 var $title = $('<h1>');
-//                 $title.append(events.event[i].title);
-
-//                 var $location = $('<p>');
-//                 $location.append(events.event[i].venue_name);
-//                 $location.append(events.event[i].venue_address);
-
-//                 var $event = $('<div>');
-//                 $event.append($title, $location);
-
-//                 $('.slickHolder').slick('slickAdd', $event);
-
-//         }
-
-//     }); // END AJAX DONE
+        }
 
 
-// }); // END SUBMIT CLICK LISTENER
+    }); // END SMARTYSTREET AJAX DONE
+
+}) // END ZIP BLUR EVENT
+
+$('.picker__holder').on('click', '.picker__clear', function () {
+    $('#date').val('');
+    $('#dateSection label').addClass('red-text');
+    dateValid = false;
+
+}); // END PICKER CLEAR CLICK
+
+$('.picker__holder').on('click', '.picker__close', function () {
+
+    var dateValue = $('#date').val();
+    if(dateValue == "") {
+        $('#dateSection label').addClass('red-text');
+        dateValid = false;
+        
+    } else {
+        $('#dateSection label').removeClass('red-text');
+        dateValid = true;
+
+        if (zipValid == true) {
+            $('#submit').removeClass('disabled');
+        }
+        
+    }
+}); // END PICKER CLOSE CLICK
 
 
-
-/*******************************
-EVENTBRITE API & GOOGLE MAPS API
-*******************************/
-
-// EVENTBRITE API
+/*************************************************
+EVENTBRITE API, GOOGLE MAPS API, SMARTYSTREETS API
+*************************************************/
 
 $('#submit').on('click', function (e) {
     e.preventDefault();
+    $('#submit').addClass('disabled');
 
-    var token = 'NHGJJNM3WETFRYYCXJ6H';
-    var url = "https://www.eventbriteapi.com/v3/events/search/?token=" + token + "&expand=venue&";
-
-    var zip = $('#zip').val().trim();
+    
     var email = $('#email').val().trim();
     var distance = $('#distance').val().trim();
-    // distance = distance + "mi";
     var category = $('#category').val();
     category = category.toString();
     var startDate = moment().format('YYYY-MM-DDThh:mm:ss');
     var endDate = moment($('#date').val()).format('YYYY-MM-DDThh:mm:ss');
     var dateRange = startDate + "-" + endDate;
 
-    console.log('Zip: ' + zip);
-    console.log('Email: ' + email);
-    console.log('Distance: ' + distance);
-    console.log(typeof distance);
-    console.log('Category: ' + category);
-    console.log(typeof category);
-    console.log('Start Date: ' + startDate);
-    console.log('Date: ' + endDate);
-    console.log('Date Range: ' + dateRange);
 
+
+// EVENTBRITE API
+
+    var token = 'NHGJJNM3WETFRYYCXJ6H';
+    var url = "https://www.eventbriteapi.com/v3/events/search/?token=" + token + "&expand=venue&";
     url += $.param({
         'q': category,
         'location.within': distance + "mi",
         'location.address': zip,
         'start_date.range_start': startDate,
         'start_date.range_end': endDate
-
 
     });
 
@@ -245,88 +460,108 @@ $('#submit').on('click', function (e) {
     
         function randomEvent() {
 
-            var randomizer = Math.floor((Math.random() * 50));
+            if (res.events.length == 0) {
+                $('#eventHolder').show();
+                var $noEvent = $('<h1>').append('Try your search again!');
+                var $noEventImg = $('<img>');
+                $noEventImg.attr('src', '../eventAbility/assets/img/no-results.jpg');
+                $('#eventDesc').append($noEventImg, $noEvent);
+                $('#eventLocDetails').empty();
+                $("#mapps").attr("src", "");
 
-            console.log(randomizer);
+            } else {
 
-            var title = res.events[randomizer].name.text;
-            var description = res.events[randomizer].description.text;
-            var date = res.events[randomizer].start.local;
+                var randomizer = Math.floor((Math.random() * res.events.length));
 
-            var $eventDiv = $('<div>');
-            var $eventTitle = $('<h1>');
-            var $eventImg = $('<img>');
-            var $eventDes = $('<p>');
-            var $eventDate = $('<p>');
+                var eAddr = res.events[randomizer].venue.address.address_1;
+                if (eAddr !== null) {
+                    eAddr = eAddr.replace(/&/g, "and");
+                }
 
-            $eventTitle.append(title);
-            $eventImg.attr('src', res.events[randomizer].logo.original.url);
-            $eventDes.append(description);
-            $eventDate.append(date);
+                var eName = res.events[randomizer].venue.name;
+                var city = res.events[randomizer].venue.address.city;
+                var state = res.events[randomizer].venue.address.region;
+                var title = res.events[randomizer].name.text;
+                var description = res.events[randomizer].description.text;
+                var date = res.events[randomizer].start.local;
+                var formatDate = moment(date).format('MMMM Do YYYY, h:mm a');
+                if (res.events[randomizer].venue.address.address_1 !== null) {
+                    var address = res.events[randomizer].venue.address.address_1 + " ";
+                }   
+                if (res.events[randomizer].venue.address.address_2 !== null) {
+                    address += res.events[randomizer].venue.address.address_2;
+                }
 
-            $eventDiv.append($eventTitle, $eventImg, $eventDes, $eventDate);
+                var postal = res.events[randomizer].venue.address.postal_code;
+                var $eventTitle = $('<h1>');
+                
+                var $eventDes = $('<p>');
+                var $eventDate = $('<p>');
+                var $locName = $('<p>');
+                var $locAddr = $('<p>');
+                var $locRegion = $('<p>');
+                var randomizerButton = $('<button>');
+                var $buttonHolder = $('<div>');
+                
+                console.log("Randomizer: " + randomizer);
 
-            $('#eventHolder').append($eventDiv);
+                $eventTitle.append(title).addClass('title');
+                $eventDes.append(description).addClass('description');
+                $eventDate.append(formatDate).addClass('date');
+                $('#eventDesc').append($eventTitle, $eventDate, $eventDes);
 
-            var randomizerButton = $('<button>');
-        randomizerButton.addClass('randomizer btn').append('New Event');
+                if (res.events[randomizer].logo !== null) {
+                    var $eventImg = $('<img>');
+                    $eventImg.attr('src', res.events[randomizer].logo.original.url);
+                    $('.date').after($eventImg);
+                }
 
-            $('#eventHolder').prepend(randomizerButton);
+                $locName.append(eName).addClass('locName');
+                $locAddr.append(address);
+
+                $locRegion.append(city + ", " + state + " ");
+                if (postal !== null) {
+                    $locRegion.append(postal);
+                }
+
+                $('#eventLocDetails').prepend($locName, $locAddr, $locRegion);
+               
+                randomizerButton.addClass('randomizer btn').append('New Event');
+                $buttonHolder.append(randomizerButton).addClass('buttonHolder');
+
+                $('#eventHolder').prepend($buttonHolder);
+                $('#eventHolder').show();
 
             // GOOGLE MAPS API
+                var mapURL = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDZO4fsXLv5ODYYBldfEUCCF63RmouiFWU&q=" + eAddr + "," + city + "+" + state;
 
-            var lat = parseFloat(res.events[randomizer].venue.address.latitude);
-            var long = parseFloat(res.events[randomizer].venue.address.longitude);
+                $("#mapps").attr("src", mapURL);
 
-            console.log(lat);
-            console.log(long);
-
-            function initMap() {
-                var uluru = {lat: lat, lng: long};
-                var map = new google.maps.Map(document.getElementById('map'), {
-                  zoom: 4,
-                  center: uluru
-                });
-                var marker = new google.maps.Marker({
-                  position: uluru,
-                  map: map
-                });
-              }
-
-            initMap();
-
+            } // END IF/ELSE EVENT EXISTENCE    
+            
         } // END randomEvent FUNCTION
 
         randomEvent();
-
-        
+      
         $(document).on('click', '.randomizer', function () {
 
-            $('#eventHolder').empty();
+            $('#eventDesc, #eventLocDetails').empty();
+            $('.buttonHolder').remove();
 
             randomEvent();
 
-        });
+        }); // END CLICK ON RANDOMIZER BUTTON
 
-    // Google Maps API 
-    //  function initMap() {
-    //     var uluru = {lat: 33.121, lng: 131.044};
-    //     var map = new google.maps.Map(document.getElementById('map'), {
-    //       zoom: 4,
-    //       center: uluru
-    //     });
-    //     var marker = new google.maps.Marker({
-    //       position: uluru,
-    //       map: map
-    //     });
-    //   }
+       
 
-    // initMap();
+    }); // END EVENTBRITE AJAX DONE
 
-    
 
-    }); // END API DONE
-
+    $('#zip').val('');
+    $('#email').val('');
+    $('#category').val('');
+    $('#date').val('');
+    $('#eventDesc, #eventLocDetails, .buttonHolder').empty();
 
 }); // END CLICK ON SUBMIT
 

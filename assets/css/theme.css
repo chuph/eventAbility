@@ -147,6 +147,38 @@ label {
 	margin-top: 10px;
 }
 
+#startUp {
+	width: 90%;
+	margin: 20px auto;
+}
+
+#startUp h1 {
+	font-size: 3em;
+	text-align: center;
+	width: 100%;
+}
+
+#showHolder {
+	width: 90%;
+	margin: 20px auto;
+}
+
+#showOne, #showTwo, #showTre {
+	float: left;
+	width: 28%;
+	margin: 0 2.5%;
+	border: 1px solid #000;
+}
+
+#showOne h4, #showTwo h4, #showTre h4 {
+	text-align: center;
+	font-size: 1.25em;
+}
+
+#showOne img, #showTwo img, #showTre img {
+	width: 100%;
+}
+
 
 @media screen and (max-width: 480px) {
 #navigation h1 {
@@ -240,6 +272,19 @@ label {
 	width: 100%;
 	float: none;
 	margin-top: 20px;
+}
+
+#showOne, #showTwo, #showTre {
+	width: 100%;
+	margin: 20px 0;
+}
+
+#showOne h4, #showTwo h4, #showTre h4 {
+	text-align: center;
+}
+
+#showOne img, #showTwo img, #showTre img {
+	width: 100%;
 }
 
 
