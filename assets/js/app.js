@@ -103,6 +103,8 @@ function geoAllow (position) {
     console.log(fronta);
         
         });
+
+    }
     
 /*********************************
 MATERIALIZE & LOAD FORMATING
@@ -122,7 +124,7 @@ var urlStart;
 var token2;
 
 
-}
+
 
 function geoDeny (position) {
 
@@ -197,12 +199,7 @@ function geoDeny (position) {
     $("#showTre").prepend(frontc, imgTre);
     console.log(fronta);
 
-function eventAPI (position) {
 
-    lat = position.coords.latitude;
-    lon = position.coords.longitude;
-    lat = lat.toString();
-    lon = lon.toString();
     
 
         
@@ -503,7 +500,7 @@ $('#submit').on('click', function (e) {
                 $("#mapps").attr("src", mapURL);
 
             } // END IF/ELSE EVENT EXISTENCE    
-=======
+
             $('#startUp').hide();
             $('#showOne').hide();
             $('#showTwo').hide();
