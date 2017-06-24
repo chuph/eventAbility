@@ -1,7 +1,39 @@
 
 $(document).ready(function(){
+
+    
+/*********************************
+MATERIALIZE & LOAD FORMATING
+*********************************/
+
+$('select').material_select();
+$('.datepicker').pickadate();
+$('#eventHolder').hide();
+
+
+/*********************************
+EVENTBRITE API INITIAL LOAD
+*********************************/ 
+var lat;
+var lon;
+var urlStart;
+var token2;
+
+function geoAllow (position) {
+
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    lat = lat.toString();
+    lon = lon.toString();
+    
+
+    token2 = 'NHGJJNM3WETFRYYCXJ6H';
+    urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
+
+
     var token2 = 'NHGJJNM3WETFRYYCXJ6H';
     var urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
+
     urlStart += $.param({
         'q': "music",
         'start_date.range_start': moment().format('YYYY-MM-DDThh:mm:ss'),
@@ -23,23 +55,48 @@ $(document).ready(function(){
     var titleTwo = bleu.events[changer2].name.text;
     var titleTre = bleu.events[changer3].name.text;
    
-    var fronta = $("<h4>");
-    var frontb = $("<h4>");
-    var frontc = $("<h4>");
+    var fronta = $("<h4>").addClass('front1');
+    var frontb = $("<h4>").addClass('front2');
+    var frontc = $("<h4>").addClass('front3');
+
+    var linka = $('<a>').addClass('linka');
+    var linkb = $('<a>').addClass('linkb');
+    var linkc = $('<a>').addClass('linkc');
+    
+    fronta = fronta.append(linka);
+    frontb = frontb.append(linkb);
+    frontc = frontc.append(linkc);
 
     var imgOne = $("<img>");
     var imgTwo = $("<img>");
     var imgTre = $("<img>");
+    
+    $(linka).text(titleOne).attr({
+                'href': bleu.events[changer].url,
+                'target': '_blank'
+            });
+    $(linkb).text(titleTwo).attr({
+                'href': bleu.events[changer2].url,
+                'target': '_blank'
+            });
+    $(linkc).text(titleTre).attr({
+                'href': bleu.events[changer3].url,
+                'target': '_blank'
+            });
 
-    fronta.append(titleOne).addClass('front');
-    frontb.append(titleTwo).addClass('front');
-    frontc.append(titleTre).addClass('front');
-
+    if (bleu.events[changer].logo !== null) {
     imgOne.addClass('image').attr('src', bleu.events[changer].logo.original.url);
-    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
-    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
+    }
 
-    $('<h1>Popular Events Around the Country</h1>').appendTo('#startUp');
+    if (bleu.events[changer2].logo !== null) {
+    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
+    }
+
+    if (bleu.events[changer3].logo !== null) {
+    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
+    }
+
+    $('<h1>Popular Events in Your Area</h1>').appendTo('#startUp');
     $("#showOne").prepend(fronta, imgOne);
     $("#showTwo").prepend(frontb, imgTwo);
     $("#showTre").prepend(frontc, imgTre);
@@ -64,6 +121,82 @@ var lon;
 var urlStart;
 var token2;
 
+
+}
+
+function geoDeny (position) {
+
+    token2 = 'NHGJJNM3WETFRYYCXJ6H';
+    urlStart = "https://www.eventbriteapi.com/v3/events/search/?token=" + token2 + "&expand=venue&";
+
+    urlStart += $.param({
+        'q': "music",
+        'sort_by': 'best',
+        'start_date.range_start': moment().format('YYYY-MM-DDThh:mm:ss'),
+        'start_date.range_end' : moment().add(1, 'week').format('YYYY-MM-DDThh:mm:ss')
+    });
+
+    $.ajax({
+        method: "GET",
+        url: urlStart
+        }).done(function(bleu) {
+            console.log(bleu);
+
+    var changer = Math.floor((Math.random() * bleu.events.length));
+    var changer2 = Math.floor((Math.random() * bleu.events.length));
+    var changer3 = Math.floor((Math.random() * bleu.events.length));
+
+    var titleOne = bleu.events[changer].name.text;
+    var titleTwo = bleu.events[changer2].name.text;
+    var titleTre = bleu.events[changer3].name.text;
+   
+    var fronta = $("<h4>").addClass('front1');
+    var frontb = $("<h4>").addClass('front2');
+    var frontc = $("<h4>").addClass('front3');
+
+    var linka = $('<a>').addClass('linka');
+    var linkb = $('<a>').addClass('linkb');
+    var linkc = $('<a>').addClass('linkc');
+    
+    fronta = fronta.append(linka);
+    frontb = frontb.append(linkb);
+    frontc = frontc.append(linkc);
+
+    var imgOne = $("<img>");
+    var imgTwo = $("<img>");
+    var imgTre = $("<img>");
+    
+    $(linka).text(titleOne).attr({
+                'href': bleu.events[changer].url,
+                'target': '_blank'
+            });
+    $(linkb).text(titleTwo).attr({
+                'href': bleu.events[changer2].url,
+                'target': '_blank'
+            });
+    $(linkc).text(titleTre).attr({
+                'href': bleu.events[changer3].url,
+                'target': '_blank'
+            });
+
+    if (bleu.events[changer].logo !== null) {
+    imgOne.addClass('image').attr('src', bleu.events[changer].logo.original.url);
+    }
+
+    if (bleu.events[changer2].logo !== null) {
+    imgTwo.addClass('image').attr('src', bleu.events[changer2].logo.original.url);
+    }
+
+    if (bleu.events[changer3].logo !== null) {
+    imgTre.addClass('image').attr('src', bleu.events[changer3].logo.original.url);
+    }
+
+    $('<h1>Popular Events Around the Country</h1>').appendTo('#startUp');
+    $("#showOne").prepend(fronta, imgOne);
+    $("#showTwo").prepend(frontb, imgTwo);
+    $("#showTre").prepend(frontc, imgTre);
+    console.log(fronta);
+
 function eventAPI (position) {
 
     lat = position.coords.latitude;
@@ -71,14 +204,15 @@ function eventAPI (position) {
     lat = lat.toString();
     lon = lon.toString();
     
+
         
+        });
 
 }
 
 function getLocation() {
 
-        navigator.geolocation.getCurrentPosition(eventAPI);
-
+        navigator.geolocation.getCurrentPosition(geoAllow, geoDeny);
        
     } 
 
@@ -86,8 +220,6 @@ function getLocation() {
 if (navigator.geolocation) {
 
     getLocation();
-
-    
         
 }
 
